@@ -1,0 +1,118 @@
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */
+
+.custom-flex { 
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container { 
+  display: flex;
+  justify-content: space-between;
+  width:60%;
+  margin-top: 1.2rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn { 
+  padding: 0.8rem;
+  border-radius: 10px;
+  background-color: red;
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-weight: 500;
+  width: 200px;
+  cursor: pointer;
+  transition: border-color 0.25s;
+
+}
+.btn:hover { 
+  border: 1px solid grey;
+  
+}
+.cancel-btn:hover { 
+  background-color: lightcoral;
+}
+.next-btn { 
+  background-color: green;
+  color: white;
+}
+.next-btn:hover{ 
+background-color: lightgreen;
+}
+.hr { 
+  width: 50%;
+  color: blue;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+a { 
+  text-decoration: none;
+}
+a:hover{ 
+  text-decoration: underline;
+  cursor: pointer;
+}
+.solo-btn { 
+  display: flex;
+  justify-content: center;
+}
+.otherLinks { 
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.input-error-message { 
+  color: red;
+  padding:2.5px;
+}
+
+.banner-img { 
+  width: 200px;
+  height: 300px;
+  /* color: white; */
+}

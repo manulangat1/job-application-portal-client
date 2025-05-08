@@ -1,0 +1,26 @@
+.sign-up { 
+    display: grid;
+    grid-template-columns: 50% 50%;
+    height: 100vh;
+}
+.banner { 
+    background-color: lightgreen;
+
+}
+.signup-form { 
+    background-color: white;
+    width: 100%;
+    
+}
+.signup-flex {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.form { 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
