@@ -46,7 +46,7 @@ function Password() {
       if (password !== confirmPassword) {
         alert("Passwords are not equal");
       }
-      navigate("/dashboard");
+      navigate("/");
     },
   });
   return (
