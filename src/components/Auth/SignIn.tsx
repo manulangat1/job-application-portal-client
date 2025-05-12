@@ -43,7 +43,8 @@ function SignIn() {
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
-      navigate("/dashboard");
+      localStorage.setItem("auth", "true");
+      navigate("/");
     },
   });
   return (
