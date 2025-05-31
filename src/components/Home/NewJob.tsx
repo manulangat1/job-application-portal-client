@@ -4,17 +4,20 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import ReusableButton from "../Reusable/Buttons/ReusableButton";
+import { useDispatch, useSelector } from "react-redux";
+import { type AppDispatch, type RootState } from "../../store/store";
+import { postJobApplication } from "../../store/slices/jobs/jobSlice";
 const elements = [
   {
-    label: "Title",
-    name: "title",
+    label: "name",
+    name: "name",
     defaultValue: "",
     type: "text",
     placeholder: "software engineer",
   },
   {
-    label: "Location",
-    name: "location",
+    label: "expectedSalary",
+    name: "expectedSalary",
     defaultValue: "",
     type: "text",
     placeholder: "Remote",
@@ -31,30 +34,35 @@ const elements = [
     name: "dateApplied",
     defaultValue: "",
     type: "date",
-    placeholder: new Date().getTime(),
+    placeholder: "",
   },
 ];
 
 function NewJob() {
   const initialValues = {
-    title: "",
-    location: "",
+    name: "",
+    expectedSalary: "",
     link: "",
     dateApplied: "",
   };
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const validationSchema = Yup.object({
-    title: Yup.string().required("Title is required."),
-    location: Yup.string().required("Location is required."),
+    name: Yup.string().required("name is required."),
+    expectedSalary: Yup.string().required("expectedSalary is required."),
     link: Yup.string().required("Link is required."),
     dateApplied: Yup.date().required("Date Applied is required."),
   });
+
+  const { errorMessage } = useSelector((state: RootState) => state.jobs);
+
+  console.log("my error message");
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(postJobApplication(values));
       navigate("/");
     },
   });
@@ -63,6 +71,7 @@ function NewJob() {
       <form onSubmit={formik.handleSubmit}>
         <section className="grid-container">
           {elements.map((element) => (
+            // <div key={element.label}>
             <ReusableInput
               type={element.type}
               defaultValue={element.defaultValue}
@@ -75,6 +84,7 @@ function NewJob() {
               name={element.name}
               formik={formik}
             />
+            // </div>
           ))}
         </section>
         <ReusableButton name="Add a new Job" />

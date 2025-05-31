@@ -21,7 +21,6 @@ function ReusableInput({
   name,
   formik,
 }: ReusableInputProps) {
-  console.log(formik.errors[name]);
   return (
     <section className="form-input-group">
       <label className="label">{label}</label>
