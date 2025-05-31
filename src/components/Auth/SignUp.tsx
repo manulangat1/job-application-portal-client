@@ -53,7 +53,6 @@ function SignUp() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       navigate("/password");
     },
   });
@@ -95,12 +94,6 @@ function SignUp() {
           <div className="solo-btn">
             <button className="btn next-btn"> Sign in</button>
           </div>
-          {/* <ButtonContainer
-            onCancel={() => console.log("hello world")}
-            // onClick={() => navigate("/password")}
-            nextText="Next"
-            cancelText="Cancel"
-          /> */}
         </form>
 
         <hr className="hr"></hr>

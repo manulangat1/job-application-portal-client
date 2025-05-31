@@ -41,7 +41,6 @@ function Password() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       const { password, confirmPassword } = values;
       if (password !== confirmPassword) {
         alert("Passwords are not equal");
@@ -78,7 +77,6 @@ function Password() {
             />
           ))}
           <ButtonContainer
-            // onClick={() => console.log("hello world")}
             onCancel={() => navigate("/signup")}
             nextText="Sign up"
             cancelText="Previous"
