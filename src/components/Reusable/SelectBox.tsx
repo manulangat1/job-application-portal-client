@@ -24,7 +24,10 @@ function SelectBox({
       >
         <option>{name}</option>
         {values.map((value: any) => (
-          <option value={value}> {value}</option>
+          <option key={value.id} value={value}>
+            {" "}
+            {value}
+          </option>
         ))}
       </select>
     </>

@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
+import React, { useEffect } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
-import NewJob from "./NewJob";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "../../store/store";
-
 import { fetchJobs } from "../../store/slices/jobs/jobSlice";
 import ReusableButton from "../Reusable/Buttons/ReusableButton";
 import { Link } from "react-router";
 import SelectBox from "../Reusable/SelectBox";
 import { JobApplicationStatusList } from "../Common/constant/constant";
+import Loader from "../Reusable/loaders/Loading";
 
 const tableHeaders = [
   "Id",
@@ -24,18 +22,14 @@ const tableHeaders = [
   "Delete",
 ];
 function Home() {
-  const [loading, setLoading] = useState(false);
-  const { user } = useSelector((state: RootState) => state.AuthReducer);
+  // const { user } = useSelector((state: RootState) => state.AuthReducer);
   const { jobs, isLoading } = useSelector((state: RootState) => state.jobs);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    setLoading(true);
     setTimeout(() => {
       dispatch(fetchJobs());
     }, 200);
-
-    setLoading(false);
   }, []);
   // TODO: also get the id of the same
   const onChange = (id: number, value: string) => {
@@ -44,12 +38,10 @@ function Home() {
 
   return (
     <main className="home">
-      {loading === true ? (
-        <Skeleton count={25} />
+      {isLoading === true ? (
+        <Loader isLoading={isLoading} />
       ) : (
         <main>
-          {/* <h1> Hi , {user?.email ? user?.email : "User"} </h1> */}
-
           <table>
             <thead>
               <tr>
@@ -64,9 +56,8 @@ function Home() {
                   <td>{job?.id}</td>
                   <td>{job?.name}</td>
                   <td>
-                    <Link to={job?.link}>{job?.link}</Link>
+                    <Link to={job?.link}>View Link</Link>
                   </td>
-                  {/* <td>{job?.status}</td> */}
                   <td>
                     <SelectBox
                       values={JobApplicationStatusList}
