@@ -22,7 +22,7 @@ const tableHeaders = [
   "Delete",
 ];
 function Home() {
-  // const { user } = useSelector((state: RootState) => state.AuthReducer);
+  const { user } = useSelector((state: RootState) => state.AuthReducer);
   const { jobs, isLoading } = useSelector((state: RootState) => state.jobs);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -42,6 +42,8 @@ function Home() {
         <Loader isLoading={isLoading} />
       ) : (
         <main>
+          <h2>Hi , {user.email}</h2>
+
           <table>
             <thead>
               <tr>
