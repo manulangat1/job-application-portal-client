@@ -1,5 +1,7 @@
+import { useDispatch } from "react-redux";
 import Resume from "../../../assets/usersvg.svg";
 import { NavLink } from "react-router";
+import { reset } from "../../../store/slices/auth/authSlice";
 
 const authenticatedNavLinks = [
   {
@@ -13,6 +15,11 @@ const authenticatedNavLinks = [
 ];
 
 function Header() {
+  const dispatch = useDispatch();
+  const onLogout = () => {
+    localStorage.clear();
+    dispatch(reset());
+  };
   return (
     <nav className="nav">
       <section className="nav-items">
@@ -27,7 +34,7 @@ function Header() {
         ))}
       </section>
       <section className="nav-items">
-        <NavLink to="/signin" onClick={() => localStorage.clear()}>
+        <NavLink to="/signin" onClick={onLogout}>
           {" "}
           Log out{" "}
         </NavLink>

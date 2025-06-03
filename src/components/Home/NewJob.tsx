@@ -56,8 +56,6 @@ function NewJob() {
 
   const { errorMessage } = useSelector((state: RootState) => state.jobs);
 
-  console.log("my error message");
-
   const formik = useFormik({
     initialValues,
     validationSchema,

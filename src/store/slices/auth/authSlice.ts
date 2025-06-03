@@ -9,11 +9,9 @@ const initialState = {
   },
   isLoading: false,
   isError: false,
-  isAuthenticated: false,
+  isAuthenticatedFlag: false,
   message: null,
-  token: localStorage.getItem("blog-cms-token")
-    ? localStorage.getItem("blog-cms-token")
-    : null,
+  token: localStorage.getItem("auth") ? localStorage.getItem("auth") : null,
 };
 
 export const loginUser = createAsyncThunk(
@@ -46,42 +44,23 @@ const authSlice = createSlice({
     builder
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
+        state.isAuthenticatedFlag = false;
       })
       .addCase(loginUser.rejected, (state, action: any) => {
         state.isError = true;
-        state.isAuthenticated = false;
+        state.isAuthenticatedFlag = false;
         state.message = action.payload;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.isAuthenticated = true;
+        state.isAuthenticatedFlag = true;
         state.isLoading = false;
         state.isError = false;
         state.message = action.payload.message;
         state.user = action.payload.data;
       });
-    //   .addCase(getProfile.pending, (state) => {
-    //     state.isLoading = true;
-    //     // state.token = localStorage.getItem("token")
-    //     //   ? localStorage.getItem("token")
-    //     //   : null;
-    //   })
-    //   .addCase(getProfile.rejected, (state, action) => {
-    //     state.isError = true;
-    //   })
-    //   .addCase(getProfile.fulfilled, (state, action) => {
-    //     state.isAuthenticated = true;
-    //     state.isLoading = false;
-    //     state.isError = false;
-    //     state.user = action.payload;
-    //     // state.user = action.payload;
-    //   });
   },
-  //   reducers: {
-  //     login: (state, action) => {},
-  //     signup: (state, action) => {},
-  //   },
 });
 
-export const { login, signup } = authSlice.actions;
+export const { reset } = authSlice.actions;
 
 export default authSlice.reducer;

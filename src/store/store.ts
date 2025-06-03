@@ -24,11 +24,6 @@ export const store = configureStore({
         ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
       },
     }),
-
-  // {
-  //   AuthReducer,
-  //   jobs: JobReducer,
-  // },
 });
 export const persistor = persistStore(store);
 export default store;

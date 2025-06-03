@@ -6,15 +6,15 @@ const override: CSSProperties = {
   margin: "0 auto",
   borderColor: "red",
 };
-function Loader({ isLoading }: any) {
+function Loader({ isLoading, size, style }: any) {
   return (
-    <main className="loader-class">
+    <main className={style === true ? "loader-class" : ""}>
       <p>Please wait a moment!!</p>
       <ClipLoader
         color="green"
         loading={isLoading}
         cssOverride={override}
-        size={150}
+        size={size ? 150 : size}
         aria-label="Loading Spinner"
         data-testid="loader"
       />
