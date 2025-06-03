@@ -39,7 +39,7 @@ function Home() {
   return (
     <main className="home">
       {isLoading === true ? (
-        <Loader isLoading={isLoading} />
+        <Loader isLoading={isLoading} size={150} style={true} />
       ) : (
         <main>
           <h2>Hi , {user.email}</h2>

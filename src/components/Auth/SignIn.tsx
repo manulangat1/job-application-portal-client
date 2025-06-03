@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../store/slices/auth/authSlice";
 import { isAuthenticated } from "../../utils/auth";
 import { type AppDispatch, type RootState } from "../../store/store";
+import Loader from "../Reusable/loaders/Loading";
 
 const elements = [
   {
@@ -34,20 +35,23 @@ function SignIn() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const authE = useSelector(
-    (state: RootState) => state.AuthReducer.isAuthenticated
+  const { user, isAuthenticatedFlag, isLoading } = useSelector(
+    (state: RootState) => state.AuthReducer
   );
 
   const navigate = useNavigate();
   // TODO: come and fix this later
   useEffect((): void => {
-    if (authE) {
+    console.log("here", isAuthenticatedFlag);
+    if (isAuthenticatedFlag) {
       const authenticated = isAuthenticated();
+
+      console.log("am I auth", authenticated);
       if (authenticated) {
         navigate("/");
       }
     }
-  }, [authE]);
+  }, [isAuthenticatedFlag]);
 
   const validationSchema = Yup.object({
     password: Yup.string()
@@ -63,9 +67,10 @@ function SignIn() {
     validationSchema,
     onSubmit: (values) => {
       dispatch(loginUser(values));
-      // navigate("/");
     },
   });
+
+  console.log("my user");
   return (
     <main className="sign-up">
       <section className="banner signup-flex">
@@ -89,7 +94,13 @@ function SignIn() {
             />
           ))}
           <div className="solo-btn">
-            <button className="btn next-btn"> Sign in</button>
+            <button className="btn next-btn">
+              {" "}
+              Sign in{" "}
+              {isLoading && (
+                <Loader color="pink" size="10" style={false} />
+              )}{" "}
+            </button>
           </div>
 
           <div className="otherLinks">

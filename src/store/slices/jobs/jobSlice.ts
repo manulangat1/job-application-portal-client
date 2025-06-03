@@ -30,10 +30,7 @@ const initialState: JobState = {
 
 export const fetchJobs = createAsyncThunk("job/all", async (thunkAPI) => {
   try {
-    console.log("I am called");
     const res = await jobApiService.fetchJobService();
-
-    console.log(res, "jd");
     return res;
   } catch (error: any) {
     const message =
