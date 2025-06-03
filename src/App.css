@@ -1,6 +1,6 @@
 
 .main-container { 
-  min-width: 10vw;
+  width: 100% !important;
 
   margin-left: auto;
   margin-right: auto;
@@ -186,24 +186,22 @@ a:hover{
 
 }
 
-/* .home { 
-  display: flex;
-  justify-content: center;
-  margin-left: 20%;
-  margin-right: 20%;
-  margin-bottom: 3rem;
-  max-width: 80%;
-} */
+
 
 
 .home {
   display: flex;
   justify-content: center;
   margin: 0 auto 6rem auto;
-  max-width: 80%;
+  width: 100%;
+
+  min-height: 75vh;
 }
 table {
   border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 td , th { 
     border: 1px solid #dddddd;
@@ -220,4 +218,11 @@ tr:nth-child(even) {
   width: 100px;
   border-radius: 1%;
   background-color: #f6f6f6f6;
+}
+
+.loader-class { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
