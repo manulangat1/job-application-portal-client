@@ -1,7 +1,6 @@
 
 .main-container { 
   width: 100% !important;
-
   margin-left: auto;
   margin-right: auto;
 }
@@ -187,13 +186,13 @@ a:hover{
 }
 
 
-
-
 .home {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   margin: 0 auto 6rem auto;
-  width: 100%;
+  width: 90%;
+  align-items: center;
 
   min-height: 75vh;
 }
@@ -202,11 +201,18 @@ table {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
+  width: 100%;
+  margin-top: 1rem;
+  /* margin-bottom: 1rem; */
 }
 td , th { 
     border: 1px solid #dddddd;
     text-align: center;
-    padding: 2rem;
+    padding: 1rem;
+}
+td { 
+  vertical-align: middle;
+  padding: 1.2rem !important;
 }
 
 tr:nth-child(even) {

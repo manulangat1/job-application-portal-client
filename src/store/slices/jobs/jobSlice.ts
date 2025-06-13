@@ -61,6 +61,45 @@ export const postJobApplication = createAsyncThunk(
   }
 );
 
+export const updateJobApplication = createAsyncThunk(
+  "job/update",
+  async ({ id, data }: { id: number; data: any }, thunkAPI) => {
+    try {
+      console.log(id, data, "here");
+      const res = jobApiService.updateJobApplicationService(id, data);
+      return res;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.message;
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const deleteJobApplication = createAsyncThunk(
+  "job/delete",
+  async (id: number, thunkAPI) => {
+    try {
+      const res = jobApiService.deleteJobPost(id);
+      return res;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.message;
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const jobSlice = createSlice({
   name: "posts",
   initialState,
@@ -76,19 +115,36 @@ const jobSlice = createSlice({
         state.isLoading = false;
         state.jobs = action.payload;
       })
-      .addCase(fetchJobs.rejected, (state, action: any) => {
+      .addCase(fetchJobs.rejected, (state) => {
         state.isLoading = false;
       })
       .addCase(postJobApplication.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(postJobApplication.fulfilled, (state, action: any) => {
+      .addCase(postJobApplication.fulfilled, (state) => {
         state.isLoading = false;
-        // state.jobs = action.payload;
       })
       .addCase(postJobApplication.rejected, (state, action: any) => {
         state.isLoading = false;
         state.errorMessage = action.payload;
+      })
+      .addCase(deleteJobApplication.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteJobApplication.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteJobApplication.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(updateJobApplication.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateJobApplication.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(updateJobApplication.rejected, (state) => {
+        state.isLoading = false;
       });
   },
 });

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../store/slices/auth/authSlice";
 import { isAuthenticated } from "../../utils/auth";
 import { type AppDispatch, type RootState } from "../../store/store";
-import Loader from "../Reusable/loaders/Loading";
+import ButtonLoader from "../Reusable/loaders/ButtonLoader";
 
 const elements = [
   {
@@ -35,18 +35,15 @@ function SignIn() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { user, isAuthenticatedFlag, isLoading } = useSelector(
+  const { isAuthenticatedFlag, isLoading } = useSelector(
     (state: RootState) => state.AuthReducer
   );
 
   const navigate = useNavigate();
-  // TODO: come and fix this later
+
   useEffect((): void => {
-    console.log("here", isAuthenticatedFlag);
     if (isAuthenticatedFlag) {
       const authenticated = isAuthenticated();
-
-      console.log("am I auth", authenticated);
       if (authenticated) {
         navigate("/");
       }
@@ -98,7 +95,7 @@ function SignIn() {
               {" "}
               Sign in{" "}
               {isLoading && (
-                <Loader color="pink" size="10" style={false} />
+                <ButtonLoader color="pink" isLoading={isLoading} />
               )}{" "}
             </button>
           </div>

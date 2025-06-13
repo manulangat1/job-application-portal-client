@@ -6,16 +6,14 @@ const isAuthenticated = () => {
   if (!token) {
     return false;
   }
-  //   const decoded = jwtDecode(token);
-  //   const { exp } = decoded;
 
   try {
     const decoded: { exp: number } = jwtDecode(token);
-
     // Check if token has expired
     const currentTime = Math.floor(Date.now() / 1000);
     return decoded.exp > currentTime;
   } catch (error) {
+    console.error(error);
     // If decoding fails (e.g., malformed token), treat as unauthenticated
     return false;
   }
