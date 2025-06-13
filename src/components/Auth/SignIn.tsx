@@ -1,10 +1,14 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import * as Yup from "yup";
 import ReusableInput from "../Reusable/Inputs/ReusableInput";
-import ButtonContainer from "../Reusable/Buttons/ButtonContainer";
 import Resume from "../../assets/resume.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../store/slices/auth/authSlice";
+import { isAuthenticated } from "../../utils/auth";
+import { type AppDispatch, type RootState } from "../../store/store";
+import ButtonLoader from "../Reusable/loaders/ButtonLoader";
 
 const elements = [
   {
@@ -28,7 +32,24 @@ function SignIn() {
     email: "",
     password: "",
   };
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { isAuthenticatedFlag, isLoading } = useSelector(
+    (state: RootState) => state.AuthReducer
+  );
+
   const navigate = useNavigate();
+
+  useEffect((): void => {
+    if (isAuthenticatedFlag) {
+      const authenticated = isAuthenticated();
+      if (authenticated) {
+        navigate("/");
+      }
+    }
+  }, [isAuthenticatedFlag]);
+
   const validationSchema = Yup.object({
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
@@ -42,10 +63,11 @@ function SignIn() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
-      navigate("/dashboard");
+      dispatch(loginUser(values));
     },
   });
+
+  console.log("my user");
   return (
     <main className="sign-up">
       <section className="banner signup-flex">
@@ -69,7 +91,13 @@ function SignIn() {
             />
           ))}
           <div className="solo-btn">
-            <button className="btn next-btn"> Sign in</button>
+            <button className="btn next-btn">
+              {" "}
+              Sign in{" "}
+              {isLoading && (
+                <ButtonLoader color="pink" isLoading={isLoading} />
+              )}{" "}
+            </button>
           </div>
 
           <div className="otherLinks">

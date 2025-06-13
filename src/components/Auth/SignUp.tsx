@@ -1,11 +1,12 @@
-import React from "react";
 import "./auth.css";
 import ReusableInput from "../Reusable/Inputs/ReusableInput";
-import ButtonContainer from "../Reusable/Buttons/ButtonContainer";
 import { Link, useNavigate } from "react-router";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Resume from "../../assets/resume.svg";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "../../store/store";
+import { updateSignUpData } from "../../store/slices/auth/authSlice";
 
 const elements = [
   {
@@ -37,6 +38,7 @@ function SignUp() {
     lastName: "",
   };
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const validationSchema = Yup.object({
     firstName: Yup.string()
       .min(2, "Name must be at least 2 characters")
@@ -53,7 +55,7 @@ function SignUp() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(updateSignUpData(values));
       navigate("/password");
     },
   });
@@ -62,12 +64,6 @@ function SignUp() {
       <section className="banner signup-flex">
         <img src={Resume} className="banner-img" alt="text of a cv writer" />
         <p>Welcome to Jobzy web application!</p>
-        {/* <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel iure
-          modi in voluptatum, repudiandae numquam maxime dolorum laudantium sed
-          ex pariatur repellendus cupiditate, eos odio nam, quo natus! Delectus,
-          quam?
-        </p> */}
       </section>
       <section className="signup-flex">
         <form className="signup-form" onSubmit={formik.handleSubmit}>
@@ -93,14 +89,8 @@ function SignUp() {
             />
           ))}
           <div className="solo-btn">
-            <button className="btn next-btn"> Sign in</button>
+            <button className="btn next-btn"> Next</button>
           </div>
-          {/* <ButtonContainer
-            onCancel={() => console.log("hello world")}
-            // onClick={() => navigate("/password")}
-            nextText="Next"
-            cancelText="Cancel"
-          /> */}
         </form>
 
         <hr className="hr"></hr>

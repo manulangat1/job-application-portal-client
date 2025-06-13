@@ -1,0 +1,19 @@
+name: Jobzy CI 
+
+
+on: 
+  push: 
+    branches: [ main]
+  pull_request:
+    branches: [main]
+
+
+
+jobs: 
+  build_and_push: 
+    runs_on: ubuntu-latest 
+    steps: 
+      - name: Check out the repo 
+        uses: actions/checkout@v2
+      - name: Build container image
+        run : docker build -t manulangat/blog_by_langat:jobzy-client
