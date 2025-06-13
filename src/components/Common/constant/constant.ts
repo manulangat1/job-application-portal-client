@@ -13,3 +13,10 @@ export const JobApplicationStatusList = [
   "REJECTED",
   "ACCEPTED",
 ];
+
+export interface LoaderInterface {
+  isLoading: boolean;
+  style?: any;
+  size?: string;
+  color?: string;
+}

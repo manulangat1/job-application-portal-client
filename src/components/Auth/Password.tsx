@@ -6,6 +6,10 @@ import { useNavigate } from "react-router";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Resume from "../../assets/resume.svg";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../store/store";
+import { singUpUser } from "../../store/slices/auth/authSlice";
+
 const elements = [
   {
     label: "Input your password",
@@ -24,6 +28,9 @@ const elements = [
 ];
 function Password() {
   const navigate = useNavigate();
+  const { signUpData } = useSelector((state: RootState) => state.AuthReducer);
+  console.log(signUpData, " my sign up data");
+  const dispatch = useDispatch<AppDispatch>();
   const validationSchema = Yup.object({
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
@@ -44,6 +51,14 @@ function Password() {
       const { password, confirmPassword } = values;
       if (password !== confirmPassword) {
         alert("Passwords are not equal");
+      } else {
+        dispatch(
+          singUpUser({
+            email: signUpData.email,
+            username: signUpData.firstName,
+            password: values.password,
+          })
+        );
       }
       navigate("/");
     },
@@ -53,12 +68,6 @@ function Password() {
       <section className="banner signup-flex">
         <img src={Resume} className="banner-img" alt="text of a cv writer" />
         <p>Enter a strong password! It is vital for your accounts security</p>
-        {/* <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel iure
-          modi in voluptatum, repudiandae numquam maxime dolorum laudantium sed
-          ex pariatur repellendus cupiditate, eos odio nam, quo natus! Delectus,
-          quam?
-        </p> */}
       </section>
       <section className="signup-flex">
         <form className="signup-form" onSubmit={formik.handleSubmit}>

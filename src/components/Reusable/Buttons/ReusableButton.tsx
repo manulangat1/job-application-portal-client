@@ -2,11 +2,22 @@ import React from "react";
 
 interface ReusableButtonInterface {
   name: string;
+  // onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick: any;
+  id?: number;
+  action?: string;
   sm?: boolean;
   danger?: boolean;
 }
 
-function ReusableButton({ name, sm, danger }: ReusableButtonInterface) {
+function ReusableButton({
+  name,
+  onClick,
+  id,
+  action,
+  sm,
+  danger,
+}: ReusableButtonInterface) {
   const className = [
     "btn",
     "next-btn",
@@ -17,7 +28,11 @@ function ReusableButton({ name, sm, danger }: ReusableButtonInterface) {
     .join(" ");
 
   return (
-    <button className={className} type="submit">
+    <button
+      className={className}
+      onClick={() => onClick(id, action)}
+      type="submit"
+    >
       {" "}
       {name}
     </button>

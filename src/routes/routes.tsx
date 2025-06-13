@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
 
 import SignUp from "../components/Auth/SignUp";
 import Password from "../components/Auth/Password";
 import NotFound from "../components/Common/NotFound/NotFound";
-import Dashboard from "../components/Dashboard/Dashboard";
+
 import SignIn from "../components/Auth/SignIn";
 import NewJob from "../components/Home/NewJob";
 import PrivateRoute from "./PrivateRoute";
+import Home from "../components/Home/Home";
 
 function RoutesConfig() {
   return (
@@ -17,7 +17,7 @@ function RoutesConfig() {
           path="/"
           element={
             <PrivateRoute>
-              <Dashboard />
+              <Home />
             </PrivateRoute>
           }
         />
@@ -29,17 +29,8 @@ function RoutesConfig() {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/signup"
-          element={
-            // <PrivateRoute>
-
-            // </PrivateRoute>
-            <SignUp />
-          }
-        />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/password" element={<Password />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

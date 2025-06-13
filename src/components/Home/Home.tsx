@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "../../store/store";
-import { fetchJobs } from "../../store/slices/jobs/jobSlice";
+import {
+  deleteJobApplication,
+  fetchJobs,
+  updateJobApplication,
+} from "../../store/slices/jobs/jobSlice";
 import ReusableButton from "../Reusable/Buttons/ReusableButton";
 import { Link } from "react-router";
 import SelectBox from "../Reusable/SelectBox";
@@ -17,7 +21,6 @@ const tableHeaders = [
   "description",
   "Expected Salary",
   "Applied on",
-
   "Update",
   "Delete",
 ];
@@ -31,19 +34,34 @@ function Home() {
       dispatch(fetchJobs());
     }, 200);
   }, []);
-  // TODO: also get the id of the same
-  const onChange = (id: number, value: string) => {
-    console.log(id, value);
+
+  const onChange = async (id: number, value: string) => {
+    await dispatch(updateJobApplication({ id, data: { status: value } }));
+    window.location.reload();
+  };
+
+  const onClick = async (id: number, action: string) => {
+    switch (action) {
+      case "update":
+        console.log(action, id, "switch");
+
+        break;
+      case "delete":
+        await dispatch(deleteJobApplication(id));
+        window.location.reload();
+        break;
+      default:
+        return;
+    }
   };
 
   return (
     <main className="home">
       {isLoading === true ? (
-        <Loader isLoading={isLoading} size={150} style={true} />
+        <Loader isLoading={isLoading} size="150" style={true} />
       ) : (
-        <main>
+        <section>
           <h2>Hi , {user.email}</h2>
-
           <table>
             <thead>
               <tr>
@@ -73,17 +91,30 @@ function Home() {
                   <td>{job?.expectedSalary ? job.expectedSalary : "---"}</td>
                   <td>{job?.appliedDate}</td>
                   <td>
-                    <ReusableButton name="Update" sm />
+                    <ReusableButton
+                      name="Update"
+                      onClick={onClick}
+                      id={job.id}
+                      action="update"
+                      sm
+                    />
                   </td>
 
                   <td>
-                    <ReusableButton name="Delete" sm danger />
+                    <ReusableButton
+                      name="Delete"
+                      onClick={onClick}
+                      id={job.id}
+                      action="delete"
+                      sm
+                      danger
+                    />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </main>
+        </section>
       )}
     </main>
   );

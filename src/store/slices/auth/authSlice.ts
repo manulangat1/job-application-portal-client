@@ -7,6 +7,12 @@ const initialState = {
     createdAt: "",
     updatedAt: "",
   },
+  signUpData: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  },
   isLoading: false,
   isError: false,
   isAuthenticatedFlag: false,
@@ -33,12 +39,37 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const singUpUser = createAsyncThunk(
+  "auth/signup",
+  async (userData: any, thunkAPI) => {
+    try {
+      const res = await authAPIService.signUpService(userData);
+      return res;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.message;
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
 
   reducers: {
     reset: (state) => initialState,
+    updateSignUpData: (state, action) => {
+      state.signUpData = {
+        ...state.signUpData,
+        ...action.payload,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -57,10 +88,23 @@ const authSlice = createSlice({
         state.isError = false;
         state.message = action.payload.message;
         state.user = action.payload.data;
+      })
+      .addCase(singUpUser.pending, (state) => {
+        state.isLoading = true;
+        state.isAuthenticatedFlag = false;
+      })
+      .addCase(singUpUser.fulfilled, (state) => {
+        state.isAuthenticatedFlag = true;
+        state.isLoading = false;
+      })
+      .addCase(singUpUser.rejected, (state, action: any) => {
+        state.isError = true;
+        state.isAuthenticatedFlag = false;
+        state.message = action.payload;
       });
   },
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, updateSignUpData } = authSlice.actions;
 
 export default authSlice.reducer;

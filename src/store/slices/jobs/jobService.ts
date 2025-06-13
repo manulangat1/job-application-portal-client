@@ -27,5 +27,35 @@ export const postfetchJobService = async (data: any) => {
   return response.data;
 };
 
-const jobApiService = { fetchJobService, postfetchJobService };
+export const updateJobApplicationService = async (id: number, data: any) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("auth")}`,
+    },
+  };
+
+  const response = await axios.put(`${JOB_API}/${id}`, data, config);
+
+  return response.data;
+};
+
+export const deleteJobPost = async (id: number) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("auth")}`,
+    },
+  };
+
+  const response = await axios.delete(`${JOB_API}/${id}`, config);
+
+  return response.data;
+};
+const jobApiService = {
+  fetchJobService,
+  postfetchJobService,
+  deleteJobPost,
+  updateJobApplicationService,
+};
 export default jobApiService;
