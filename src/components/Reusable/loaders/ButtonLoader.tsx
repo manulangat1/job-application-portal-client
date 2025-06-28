@@ -1,5 +1,5 @@
 import { type CSSProperties } from "react";
-import { ClipLoader } from "react-spinners";
+import { BounceLoader } from "react-spinners";
 import type { LoaderInterface } from "../../Common/constant/constant";
 
 const override: CSSProperties = {
@@ -9,7 +9,7 @@ const override: CSSProperties = {
 };
 function ButtonLoader({ isLoading }: LoaderInterface) {
   return (
-    <ClipLoader
+    <BounceLoader
       color="white"
       loading={isLoading}
       cssOverride={override}

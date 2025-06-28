@@ -19,8 +19,8 @@ const elements = [
     label: "expectedSalary",
     name: "expectedSalary",
     defaultValue: "",
-    type: "text",
-    placeholder: "Remote",
+    type: "number",
+    placeholder: "21000",
   },
   {
     label: "Link",
