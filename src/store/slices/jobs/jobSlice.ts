@@ -1,12 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import jobApiService from "./jobService";
-
+enum Currency {
+  KES = "KES",
+  USD = "USD",
+  EURO = "EURO",
+  POUND = "POUND",
+}
 export interface JobApplication {
   id: number;
   name: string;
   description: string | null;
   link: string;
   expectedSalary: string;
+  currency: Currency;
   status: "APPLIED" | "INTERVIEWING" | "OFFERED" | "REJECTED" | string; // Add more statuses if needed
   appliedDate: string; // e.g. "2025-05-31"
   contractSignedDate: string | null;
@@ -132,6 +138,7 @@ const jobSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(deleteJobApplication.fulfilled, (state) => {
+        state.jobs = [];
         state.isLoading = false;
       })
       .addCase(deleteJobApplication.rejected, (state) => {
