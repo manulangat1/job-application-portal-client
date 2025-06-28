@@ -193,8 +193,18 @@ a:hover{
   margin: 0 auto 6rem auto;
   width: 90%;
   align-items: center;
-
   min-height: 75vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-component{ 
+ 
+  max-width: 90%;
+ 
+  min-height: 75vh;
+  margin-left: auto;
+  margin-right: auto;
 }
 table {
   border-collapse: collapse;
@@ -203,7 +213,9 @@ table {
   white-space: nowrap;
   width: 100%;
   margin-top: 1rem;
-  /* margin-bottom: 1rem; */
+  margin-left: auto;
+  margin-right: auto;
+  
 }
 td , th { 
     border: 1px solid #dddddd;
@@ -222,8 +234,15 @@ tr:nth-child(even) {
 .select-box{ 
   padding: 1rem;
   width: 100px;
-  border-radius: 1%;
+  border-radius: 5px;
   background-color: #f6f6f6f6;
+  transition: 0.4s;
+  border: none;
+}
+
+.select-box:hover,
+.select-box:focus {
+  background: #ddd;
 }
 
 .loader-class { 
@@ -231,4 +250,9 @@ tr:nth-child(even) {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.edit-input {
+  padding: 0.8rem;
+    border: 1px solid grey;
+    border-radius: 10px;
 }

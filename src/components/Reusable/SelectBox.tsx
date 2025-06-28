@@ -5,7 +5,7 @@ interface SelectBoxProps {
   name: string;
   id: number;
   onChange: any;
-  defaultValue?: string;
+  defaultValue?: null | string;
 }
 function SelectBox({
   values,
@@ -20,9 +20,10 @@ function SelectBox({
         className="select-box"
         onChange={(e) => onChange(id, e.target.value)}
         name={name}
-        defaultValue={defaultValue}
+        {...(defaultValue ? { defaultValue } : {})}
       >
-        <option>{name}</option>
+        {/* only display title if the length of values array is less than 1  */}
+        {values.length < 1 && <option>{name}</option>}
         {values.map((value: any) => (
           <option key={value.id} value={value}>
             {" "}
