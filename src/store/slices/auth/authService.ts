@@ -1,5 +1,7 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_APP_BASE_API_URL;
+
+console.log("BASE_URL", BASE_URL);
 const LOGIN_URL = BASE_URL + "/auth/login/";
 const PROFILE_URL = BASE_URL + "/profile/";
 const SIGNUP_URL = BASE_URL + "/auth";
