@@ -1,5 +1,6 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_APP_BASE_API_URL;
+// const JOB_API = BASE_URL + "/jobs/paginated";
 const JOB_API = BASE_URL + "/jobs";
 export const fetchJobService = async () => {
   const config = {
