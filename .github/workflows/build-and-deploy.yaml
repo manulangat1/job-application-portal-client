@@ -36,7 +36,7 @@ jobs:
       - name: stop containers
         run: docker compose -f compose.yaml down --volumes
 
-      - name: Executing remote  command and deployment to digital ocean for dev enviroment
+      - name: Executing remote  command and deployment of client to digital ocean for dev enviroment
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST}}
@@ -51,4 +51,23 @@ jobs:
             docker system prune -af
             docker compose -f compose.yaml pull
             docker compose -f compose.yaml  up --build --remove-orphans -d --force-recreate
+            # docker-compose -f compose.yaml up  --build  -d
+      
+
+      - name: Executing remote  command and deployment of nginx to digital ocean for dev enviroment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST}}
+          USERNAME: ${{ secrets.NAME}}
+          PORT: 22
+          KEY: ${{ secrets.DO_PRIVATE_KEY}}
+          script: |
+            cd nginx/
+            docker system prune -af
+            docker compose  -f compose.yaml down --volumes
+            echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin
+            docker system prune -af
+            docker compose -f compose.yaml pull nginx 
+            docker compose -f compose.yaml  up --build --remove-orphans -d --force-recreate nginx
+            docker compose -f compose.yaml ps
             # docker-compose -f compose.yaml up  --build  -d
