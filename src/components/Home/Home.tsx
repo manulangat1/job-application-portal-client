@@ -6,6 +6,7 @@ import {
   deleteJobApplication,
   fetchJobs,
   updateJobApplication,
+  // type JobApplication,
 } from "../../store/slices/jobs/jobSlice";
 import ReusableButton from "../Reusable/Buttons/ReusableButton";
 import SelectBox from "../Reusable/SelectBox";
@@ -38,6 +39,10 @@ function Home() {
   };
 
   const { user } = useSelector((state: RootState) => state.AuthReducer);
+  // const [hasMore, setHasMore] = useState<boolean>(false);
+  // const [job, setJob] = useState<JobApplication[]>([]);
+  // const [take, setTake] = useState<number>(1);
+  // const [skip, setSkip] = useState<number>(0);
   const { jobs, isLoading } = useSelector((state: RootState) => state.jobs);
   const [editingRowId, setEditingRowId] = useState<number | null>(null);
   const [displayRejectionReasons, setDisplayRejectionReasons] =
@@ -59,6 +64,8 @@ function Home() {
       dispatch(fetchJobs());
     }, 200);
   }, []);
+
+  // const getJobs = () => {};
 
   const onChange = async (id: number, value: string) => {
     switch (value) {
@@ -153,119 +160,120 @@ function Home() {
               </tr>
             </thead>
             <tbody>
-              {jobs?.map((job) => (
-                <tr key={job?.id}>
-                  <td>{job.id}</td>
-                  <td>{job?.name}</td>
-                  <td>
-                    <a href={job.link} target="_blank">
-                      View Link
-                    </a>
-                  </td>
-                  <td>
-                    {editingRowId === job.id ? (
-                      <SelectBox
-                        values={JobApplicationStatusList}
-                        name="status"
-                        id={job.id}
-                        onChange={onChange}
-                        defaultValue={job.status}
-                      />
-                    ) : (
-                      job.status
-                    )}
-                  </td>
-                  <td>
-                    {" "}
-                    {displayRejectionReasons &&
-                    job.id === displayRejectionReasonsId ? (
-                      <SelectBox
-                        values={JobApplicationDescriptionList}
-                        name="description"
-                        id={job.id}
-                        onChange={onDescriptionChange}
-                        defaultValue={job?.description}
-                      />
-                    ) : job.description ? (
-                      job.description
-                    ) : (
-                      "---"
-                    )}{" "}
-                  </td>
-                  <td>
-                    {editingRowId === job.id ? (
-                      <input
-                        className="edit-input"
-                        type="number"
-                        name="expectedSalary"
-                        onChange={handleChange}
-                        defaultValue={job.expectedSalary}
-                      />
-                    ) : job?.expectedSalary ? (
-                      job.expectedSalary
-                    ) : (
-                      "---"
-                    )}
-                  </td>
+              {jobs &&
+                jobs?.map((job) => (
+                  <tr key={job?.id}>
+                    <td>{job.id}</td>
+                    <td>{job?.name}</td>
+                    <td>
+                      <a href={job.link} target="_blank">
+                        View Link
+                      </a>
+                    </td>
+                    <td>
+                      {editingRowId === job.id ? (
+                        <SelectBox
+                          values={JobApplicationStatusList}
+                          name="status"
+                          id={job.id}
+                          onChange={onChange}
+                          defaultValue={job.status}
+                        />
+                      ) : (
+                        job.status
+                      )}
+                    </td>
+                    <td>
+                      {" "}
+                      {displayRejectionReasons &&
+                      job.id === displayRejectionReasonsId ? (
+                        <SelectBox
+                          values={JobApplicationDescriptionList}
+                          name="description"
+                          id={job.id}
+                          onChange={onDescriptionChange}
+                          defaultValue={job?.description}
+                        />
+                      ) : job.description ? (
+                        job.description
+                      ) : (
+                        "---"
+                      )}{" "}
+                    </td>
+                    <td>
+                      {editingRowId === job.id ? (
+                        <input
+                          className="edit-input"
+                          type="number"
+                          name="expectedSalary"
+                          onChange={handleChange}
+                          defaultValue={job.expectedSalary}
+                        />
+                      ) : job?.expectedSalary ? (
+                        job.expectedSalary
+                      ) : (
+                        "---"
+                      )}
+                    </td>
 
-                  <td>
-                    {editingRowId === job.id ? (
-                      <SelectBox
-                        values={CurrenciesList}
-                        name="currency"
-                        id={job.id}
-                        onChange={onUpdateChange}
-                        defaultValue={job.currency}
-                      />
-                    ) : job?.currency ? (
-                      job.currency
-                    ) : (
-                      "---"
-                    )}
-                  </td>
-                  <td>
-                    {editingRowId === job.id ? (
-                      <input
-                        className="edit-input"
-                        type="date"
-                        defaultValue={job.appliedDate}
-                      />
-                    ) : (
-                      job?.appliedDate
-                    )}
-                  </td>
-                  <td>
-                    {editingRowId === job.id ? (
+                    <td>
+                      {editingRowId === job.id ? (
+                        <SelectBox
+                          values={CurrenciesList}
+                          name="currency"
+                          id={job.id}
+                          onChange={onUpdateChange}
+                          defaultValue={job.currency}
+                        />
+                      ) : job?.currency ? (
+                        job.currency
+                      ) : (
+                        "---"
+                      )}
+                    </td>
+                    <td>
+                      {editingRowId === job.id ? (
+                        <input
+                          className="edit-input"
+                          type="date"
+                          defaultValue={job.appliedDate}
+                        />
+                      ) : (
+                        job?.appliedDate
+                      )}
+                    </td>
+                    <td>
+                      {editingRowId === job.id ? (
+                        <ReusableButton
+                          name="Save"
+                          onClick={onClick}
+                          id={job.id}
+                          action="save"
+                          sm
+                        />
+                      ) : (
+                        <ReusableButton
+                          name="Update"
+                          onClick={onClick}
+                          id={job.id}
+                          action="update"
+                          sm
+                        />
+                      )}
+                    </td>
+
+                    <td>
                       <ReusableButton
-                        name="Save"
+                        name="Delete"
                         onClick={onClick}
                         id={job.id}
-                        action="save"
+                        action="delete"
                         sm
+                        danger
                       />
-                    ) : (
-                      <ReusableButton
-                        name="Update"
-                        onClick={onClick}
-                        id={job.id}
-                        action="update"
-                        sm
-                      />
-                    )}
-                  </td>
-
-                  <td>
-                    <ReusableButton
-                      name="Delete"
-                      onClick={onClick}
-                      id={job.id}
-                      action="delete"
-                      sm
-                      danger
-                    />
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </section>
