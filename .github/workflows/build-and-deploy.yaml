@@ -3,11 +3,11 @@ name: Continuous Integration and Delivery
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  # pull_request:
+  #   branches: [main]
 
 jobs:
-  testing-docker-compose:
+  build_and_deploy_jobzy_client:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
