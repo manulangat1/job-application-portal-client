@@ -13,7 +13,7 @@ const isAuthenticated = () => {
     const currentTime = Math.floor(Date.now() / 1000);
     return decoded.exp > currentTime;
   } catch (error) {
-    console.error(error);
+    console.error(error, "is my error");
     // If decoding fails (e.g., malformed token), treat as unauthenticated
     return false;
   }
