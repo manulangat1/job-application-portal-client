@@ -7,5 +7,8 @@ export default defineConfig({
   server: {
     host: true, // allows external access
     allowedHosts: ["jobs.kipchirchirlangat.com", "client", "localhost"],
+    hmr: {
+      overlay: false,
+    },
   },
 });
