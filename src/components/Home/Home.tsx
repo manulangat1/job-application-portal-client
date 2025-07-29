@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "../../store/store";
@@ -17,6 +17,7 @@ import {
   JobApplicationStatusList,
 } from "../Common/constant/constant";
 import Loader from "../Reusable/loaders/Loading";
+import { fetchJobWithPagination } from "../../store/slices/jobs/jobService";
 
 const tableHeaders = [
   "Id",
@@ -39,11 +40,17 @@ function Home() {
   };
 
   const { user } = useSelector((state: RootState) => state.AuthReducer);
-  // const [hasMore, setHasMore] = useState<boolean>(false);
-  // const [job, setJob] = useState<JobApplication[]>([]);
-  // const [take, setTake] = useState<number>(1);
-  // const [skip, setSkip] = useState<number>(0);
-  const { jobs, isLoading } = useSelector((state: RootState) => state.jobs);
+
+  //  pagination logic for infinite scroll.
+  const initialLoadRef = useRef(false);
+  const [take, setTake] = useState<number>(5);
+  const [skip, setSkip] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const observerTarget = useRef<HTMLTableSectionElement>(null);
+  // const { jobs, isLoading } = useSelector((state: RootState) => state.jobs);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [editingRowId, setEditingRowId] = useState<number | null>(null);
   const [displayRejectionReasons, setDisplayRejectionReasons] =
     useState<boolean>(false);
@@ -59,13 +66,84 @@ function Home() {
   >(null);
   const dispatch = useDispatch<AppDispatch>();
 
+  const handleLoadMoreJobs = useCallback(async () => {
+    if (loading || !hasMore || isLoading) return;
+    setLoading(true);
+    try {
+      const { jobs, hasMore } = await fetchJobWithPagination(take, skip);
+
+      handleSetJobs(jobs);
+      setHasMore(hasMore);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+    setSkip((prevSkip: number) => prevSkip + take);
+  }, [loading, hasMore, isLoading, take, skip]);
+
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(fetchJobs());
-    }, 200);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        //  only load when neccessary!
+        if (
+          entries[0].isIntersecting &&
+          !isLoading &&
+          hasMore &&
+          !loading &&
+          jobs?.length > 0
+        ) {
+          handleLoadMoreJobs();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+      observer.disconnect();
+    };
+  }, [handleLoadMoreJobs, isLoading, jobs?.length, loading, observerTarget]);
+
+  const loadInitialJobs = useCallback(async () => {
+    try {
+      const { jobs, hasMore } = await fetchJobWithPagination(take, skip);
+
+      handleSetJobs(jobs);
+      setHasMore(hasMore);
+
+      initialLoadRef.current = true;
+      // set the skip and take for the next cycle!
+      setSkip((prevSkip) => prevSkip + take);
+    } catch (error) {
+      console.log("Error !!:", error);
+    }
   }, []);
 
-  // const getJobs = () => {};
+  const handleSetJobs = (newJobs: any[]) => {
+    newJobs.forEach((job) => {
+      const itemExists = jobs.some((existingJob) => existingJob.id === job.id);
+      if (!itemExists) {
+        setJobs((prevJobs) => [...prevJobs, job]);
+      }
+    });
+  };
+
+  const hasRun = useRef(false);
+
+  useEffect(() => {
+    // strict enforcing to ensure that this is only run once!
+    if (!hasRun.current) {
+      hasRun.current = true;
+
+      loadInitialJobs();
+    }
+  }, []);
 
   const onChange = async (id: number, value: string) => {
     switch (value) {
@@ -160,7 +238,8 @@ function Home() {
               </tr>
             </thead>
             <tbody>
-              {jobs &&
+              {
+                // jobs &&
                 jobs?.map((job) => (
                   <tr key={job?.id}>
                     <td>{job.id}</td>
@@ -273,9 +352,13 @@ function Home() {
                       />
                     </td>
                   </tr>
-                ))}
+                ))
+              }
             </tbody>
           </table>
+          {!isLoading && hasMore && !loading && jobs && jobs?.length > 0 && (
+            <div ref={observerTarget}></div>
+          )}
         </section>
       )}
     </main>

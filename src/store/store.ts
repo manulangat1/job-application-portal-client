@@ -9,6 +9,7 @@ const persistConfig = {
   key: "root",
   storage,
 };
+
 const rootReducer = combineReducers({
   AuthReducer,
   jobs: JobReducer,
