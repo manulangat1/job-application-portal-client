@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "../../store/store";
 import {
   deleteJobApplication,
-  fetchJobs,
   updateJobApplication,
-  // type JobApplication,
 } from "../../store/slices/jobs/jobSlice";
 import ReusableButton from "../Reusable/Buttons/ReusableButton";
 import SelectBox from "../Reusable/SelectBox";
@@ -111,17 +109,20 @@ function Home() {
   }, [handleLoadMoreJobs, isLoading, jobs?.length, loading, observerTarget]);
 
   const loadInitialJobs = useCallback(async () => {
+    setIsLoading(true);
     try {
       const { jobs, hasMore } = await fetchJobWithPagination(take, skip);
 
       handleSetJobs(jobs);
       setHasMore(hasMore);
+      setIsLoading(false);
 
       initialLoadRef.current = true;
       // set the skip and take for the next cycle!
       setSkip((prevSkip) => prevSkip + take);
     } catch (error) {
       console.log("Error !!:", error);
+      setIsLoading(false);
     }
   }, []);
 
@@ -228,7 +229,7 @@ function Home() {
         <Loader isLoading={isLoading} size="150" style={true} />
       ) : (
         <section className="home-component">
-          <h2>Hi , {user.email}</h2>
+          <h2 className="user-email">Hi , {user.email}</h2>
           <table>
             <thead>
               <tr>

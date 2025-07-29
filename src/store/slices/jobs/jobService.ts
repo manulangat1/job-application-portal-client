@@ -1,6 +1,7 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_APP_BASE_API_URL;
 const JOB_API = BASE_URL + "/jobs";
+const DASHBOARD_API = BASE_URL + "/dashboard";
 export const fetchJobService = async () => {
   const config = {
     headers: {
@@ -23,6 +24,19 @@ export const postfetchJobService = async (data: any) => {
   };
 
   const response = await axios.post(JOB_API, data, config);
+
+  return response.data;
+};
+
+export const getDashBoardAPI = async () => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("auth")}`,
+    },
+  };
+
+  const response = await axios.get(DASHBOARD_API, config);
 
   return response.data;
 };

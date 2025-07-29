@@ -8,6 +8,7 @@ import SignIn from "../components/Auth/SignIn";
 import NewJob from "../components/Home/NewJob";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../components/Home/Home";
+import Dashboard from "../components/Dashboard/Dashboard";
 
 function RoutesConfig() {
   return (
@@ -18,6 +19,14 @@ function RoutesConfig() {
           element={
             <PrivateRoute>
               <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
             </PrivateRoute>
           }
         />
