@@ -69,7 +69,6 @@ function NewJob() {
       <form onSubmit={formik.handleSubmit}>
         <section className="grid-container">
           {elements.map((element) => (
-            // <div key={element.label}>
             <ReusableInput
               type={element.type}
               defaultValue={element.defaultValue}
@@ -82,10 +81,12 @@ function NewJob() {
               name={element.name}
               formik={formik}
             />
-            // </div>
           ))}
         </section>
-        <ReusableButton name="Add a new Job" />
+        <ReusableButton
+          onClick={() => console.log("I am clicked!")}
+          name="Add a new Job"
+        />
       </form>
     </section>
   );
