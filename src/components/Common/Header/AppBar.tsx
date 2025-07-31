@@ -16,8 +16,12 @@ import MenuItem from "@mui/material/MenuItem";
 
 import Resume from "../../../assets/usersvg.svg";
 import { NavLink } from "react-router";
+import { useDispatch } from "react-redux";
+import type { AppDispatch, RootState } from "../../../store/store";
+import { reset } from "../../../store/slices/auth/authSlice";
 
 function NavBarResponsive() {
+  const dispatch = useDispatch<AppDispatch>();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -42,6 +46,8 @@ function NavBarResponsive() {
 
   const onLogout = () => {
     localStorage.clear();
+
+    console.log("On reset");
     dispatch(reset());
   };
 
@@ -76,8 +82,42 @@ function NavBarResponsive() {
             Jobzy
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
-          <Box sx={{ flexGrow: 0 }} sx={{ display: "flex" }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: {
+                xs: "none",
+                md: "flex",
+                lg: "flex",
+                xl: "flex",
+                sm: "flex",
+              },
+              justifyContent: "flex-end",
+              marginLeft: "auto", // pushes it to the right end
+            }}
+          >
+            {authenticatedNavLinks.map((navLink) => (
+              <MenuItem key={navLink.link} onClick={handleCloseUserMenu}>
+                <Typography sx={{ textAlign: "center" }}>
+                  <NavLink to={navLink.link}>{navLink.name}</NavLink>
+                </Typography>
+              </MenuItem>
+            ))}
+            <MenuItem>
+              <NavLink to="/signin" onClick={onLogout}>
+                {" "}
+                <Typography sx={{ textAlign: "center" }}>Log out</Typography>
+              </NavLink>
+            </MenuItem>
+          </Box>
+          <Box
+            sx={{
+              display: { md: "none", lg: "none", sm: "none", xs: "flex" },
+
+              justifyContent: "flex-end",
+              marginLeft: "auto", // pushes it to the right end
+            }}
+          >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
