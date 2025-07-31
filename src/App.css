@@ -173,6 +173,7 @@ a:hover{
   max-width: 60%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 3rem;
 
   .btn {
     display: flex;
@@ -319,6 +320,10 @@ tr:nth-child(even) {
     display: grid !important;
     grid-template-columns: 1fr !important;
     margin-bottom: 4rem;
+  }
+
+  .mobile-nav { 
+    display: none;
   }
 
 
