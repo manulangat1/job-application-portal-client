@@ -29,7 +29,6 @@ const elements = [
 function Password() {
   const navigate = useNavigate();
   const { signUpData } = useSelector((state: RootState) => state.AuthReducer);
-  console.log(signUpData, " my sign up data");
   const dispatch = useDispatch<AppDispatch>();
   const validationSchema = Yup.object({
     password: Yup.string()

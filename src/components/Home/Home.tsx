@@ -16,7 +16,8 @@ import {
 } from "../Common/constant/constant";
 import Loader from "../Reusable/loaders/Loading";
 import { fetchJobWithPagination } from "../../store/slices/jobs/jobService";
-
+// import CommonAlert from "../Reusable/Alert/CommonAlert";
+import { Bounce, toast } from "react-toastify";
 const tableHeaders = [
   "Id",
   "Name",
@@ -120,6 +121,18 @@ function Home() {
       initialLoadRef.current = true;
       // set the skip and take for the next cycle!
       setSkip((prevSkip) => prevSkip + take);
+
+      toast("Records loaded successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error) {
       console.log("Error !!:", error);
       setIsLoading(false);
@@ -229,6 +242,7 @@ function Home() {
         <Loader isLoading={isLoading} size="150" style={true} />
       ) : (
         <section className="home-component">
+          {/* <CommonAlert severity="success" message="Jobs loaded successfully" /> */}
           <h2 className="user-email">Hi , {user.email}</h2>
           <table>
             <thead>
