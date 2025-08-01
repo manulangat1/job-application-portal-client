@@ -18,6 +18,7 @@ import Loader from "../Reusable/loaders/Loading";
 import { fetchJobWithPagination } from "../../store/slices/jobs/jobService";
 // import CommonAlert from "../Reusable/Alert/CommonAlert";
 import { Bounce, toast } from "react-toastify";
+import ConfirmationModal from "../Reusable/Modal/ConfirmationModal";
 const tableHeaders = [
   "Id",
   "Name",
@@ -37,7 +38,8 @@ function Home() {
     status: string | null; // or JobApplicationStatus | null
     description: string | null;
   };
-
+  const [deletionId, setDeletionId] = useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const { user } = useSelector((state: RootState) => state.AuthReducer);
 
   //  pagination logic for infinite scroll.
@@ -134,7 +136,7 @@ function Home() {
         transition: Bounce,
       });
     } catch (error) {
-      console.log("Error !!:", error);
+      // console.log("Error !!:", error);
       setIsLoading(false);
     }
   }, []);
@@ -185,14 +187,50 @@ function Home() {
     }));
   };
 
+  const onSuccessClick = async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(deleteJobApplication(deletionId));
+      setIsLoading(false);
+      toast("Record deleted successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      window.location.reload();
+      setDeletionId(0);
+    } catch (error) {
+      setIsLoading(false);
+      toast(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
   const onClick = async (id: number, action: string) => {
     switch (action) {
       case "update":
         setEditingRowId(id);
         break;
       case "delete":
-        await dispatch(deleteJobApplication(id));
-        window.location.reload();
+        setShowModal(!showModal);
+        setDeletionId(id);
+        // await dispatch(deleteJobApplication(id));
+        // window.location.reload();
         break;
       case "save": {
         await dispatch(
@@ -373,6 +411,15 @@ function Home() {
           </table>
           {!isLoading && hasMore && !loading && jobs && jobs?.length > 0 && (
             <div ref={observerTarget}></div>
+          )}
+
+          {showModal && (
+            <ConfirmationModal
+              open={showModal}
+              onClose={setShowModal}
+              onSuccessClick={onSuccessClick}
+              message={"Are you sure you want to delete this job application?"}
+            />
           )}
         </section>
       )}
