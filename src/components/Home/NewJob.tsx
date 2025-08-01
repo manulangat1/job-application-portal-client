@@ -7,6 +7,7 @@ import ReusableButton from "../Reusable/Buttons/ReusableButton";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "../../store/store";
 import { postJobApplication } from "../../store/slices/jobs/jobSlice";
+import { Bounce, toast } from "react-toastify";
 const elements = [
   {
     label: "name",
@@ -61,6 +62,19 @@ function NewJob() {
     validationSchema,
     onSubmit: (values) => {
       dispatch(postJobApplication(values));
+
+      toast("Job app record added successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       navigate("/");
     },
   });

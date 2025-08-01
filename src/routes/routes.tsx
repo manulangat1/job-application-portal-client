@@ -9,10 +9,12 @@ import NewJob from "../components/Home/NewJob";
 import PrivateRoute from "./PrivateRoute";
 import Home from "../components/Home/Home";
 import Dashboard from "../components/Dashboard/Dashboard";
+import { ToastContainer } from "react-toastify";
 
 function RoutesConfig() {
   return (
     <>
+      <ToastContainer />
       <Routes>
         <Route
           path="/"

@@ -67,7 +67,6 @@ function SignIn() {
     },
   });
 
-  console.log("my user");
   return (
     <main className="sign-up">
       <section className="banner signup-flex">

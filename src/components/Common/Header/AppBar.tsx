@@ -47,7 +47,6 @@ function NavBarResponsive() {
   const onLogout = () => {
     localStorage.clear();
 
-    console.log("On reset");
     dispatch(reset());
   };
 
