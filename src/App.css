@@ -285,6 +285,13 @@ tr:nth-child(even) {
   grid-gap: 3% !important;
 }
 
+.modal-buttons { 
+  display: flex;
+}
+.modal-button{ 
+  padding: 1rem;
+}
+
 /* Implements media queries */
 
 @media screen  and (max-width: 600px) {
@@ -324,6 +331,16 @@ tr:nth-child(even) {
 
   .mobile-nav { 
     display: none;
+  }
+
+  .modal-buttons{ 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-container { 
+    width: 60% !important;
   }
 
 
