@@ -1,61 +1,55 @@
-# FROM node:22-alpine AS builder
-
-# WORKDIR /usr/src/app 
 
 
-# COPY package.json package*.json yarn.lock  ./ 
+# FROM node:22-alpine
 
-# RUN yarn install 
+# WORKDIR /usr/src/app
 
+# COPY package.json yarn.lock ./
+# RUN yarn install
 
-# COPY . .  
-
-
-# ENV DISABLE_ESLINT_PLUGIN=true
-# # RUN yarn build 
+# COPY . .
 
 
 
-# # # Remove build dependencies to reduce layer size
-# # RUN apk del .build-deps
+# EXPOSE 5173
+
+# CMD [ "yarn", "dev", "--host" ]
 
 
-# # FROM node:22-alpine 
+ARG NODE_VERSION=22-alpine
 
+# =========================
+# Build Stage
+# =========================
+FROM node:${NODE_VERSION} AS build
 
-# # WORKDIR /usr/src/app  
-
-
-# # Create non-root user
-# RUN addgroup -S appuser && adduser -S -G appuser appuser \
-#     && chown -R appuser:appuser /usr/src/app
-
-
-# # # Copy only production files from builder
-# # COPY --from=builder --chown=appuser:appuser /usr/src/app/dist ./dist
-# # COPY --from=builder --chown=appuser:appuser /usr/src/app/node_modules ./node_modules
-
-
-# USER appuser
-
-
-# EXPOSE 5173 
-
-# CMD [ "yarn", "dev" ]
-
-
-FROM node:22-alpine
-
-WORKDIR /usr/src/app
+ARG APP_HOME=/app
+WORKDIR ${APP_HOME}
 
 COPY package.json yarn.lock ./
+
 RUN yarn install
 
 COPY . .
 
+# Build-time environment variables
 
 
-EXPOSE 5173
+ENV VITE_APP_BASE_API_URL=https://jobzy-be.vm.kipchirchirlangat.com/api/v1
 
-CMD [ "yarn", "dev", "--host" ]
-# CMD [ "yarn", "build" ]
+RUN yarn build
+
+
+# =========================
+# Serve Stage
+# =========================
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Vite SPA routing support
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
